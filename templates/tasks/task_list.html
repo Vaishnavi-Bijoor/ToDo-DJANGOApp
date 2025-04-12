@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="container mt-4">
+    <div class="cute"><h2 class="cutee-heading "><b>Your Tasks</b></h2></div>
+
+    <a href="{% url 'add_task' %}" class="btn btn-success mb-3">+ Add Task</a>
+    <div class="task-table-wrapper">
+    <table class="table table-striped table-hover shadow rounded">
+        <thead class="table-dark">
+            <tr>
+                <th>Task</th>
+                <th>Status</th>
+                <th>Mark Complete</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for task in tasks %}
+            <tr>
+                <td {% if task.completed %}style="text-decoration: line-through;"{% endif %}>
+                    {{ task.title }}
+                </td>
+                <td>
+                    {% if task.completed %}
+                        ✅
+                    {% else %}
+                        ❌
+                    {% endif %}
+                </td>
+                <td>
+                    <form action="{% url 'toggle_complete' task.pk %}" method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-sm {% if task.completed %}btn-warning{% else %}btn-success{% endif %}">
+                            <i class="fa-solid fa-check icon"></i>
+                            {% if task.completed %}Undo{% else %}Complete{% endif %}
+                        </button>
+                    </form>
+                </td>
+                <td>
+                    <a href="{% url 'update_task' task.pk %}" class="btn btn-primary"><i class="fa-solid fa-pen icon"></i>Edit</a>
+                    <a href="{% url 'delete_task' task.pk %}" class="btn btn-danger"><i class="fa-solid fa-trash icon"></i>Delete</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4" class="text-center">No tasks yet! 🎉</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+</div>
+{% endblock %}

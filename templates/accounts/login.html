@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="login-container">
+<h2 class="h2class">Login</h2>
+
+<form class="login-form" method="post">
+    {% csrf_token %}
+    <input type="text" name="username" placeholder="Username" class="form-control my-2">
+    <input type="password" name="password" placeholder="Password" class="form-control my-2">
+    <button type="submit" class="btn btn-primary">Login</button>
+</form>
+<p class="toggle-link">
+    Don't have an account? <a href="{% url 'register' %}">Register here</a>
+  </p>
+</div>
+{% endblock %}
